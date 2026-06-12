@@ -1,5 +1,7 @@
 # Website Helper Tools
 
+[![Tests](https://github.com/mengdahue-cpu/website-helper-tools/actions/workflows/tests.yml/badge.svg)](https://github.com/mengdahue-cpu/website-helper-tools/actions/workflows/tests.yml)
+
 A small, practical toolkit for planning, writing, and maintaining enterprise websites.
 
 The project focuses on reusable content templates, lightweight automation, and concise
@@ -23,6 +25,8 @@ site owners who want a consistent starting point without adopting a large framew
 
 ```text
 website-helper-tools/
+|-- .github/workflows/tests.yml
+|-- CONTRIBUTING.md
 |-- README.md
 |-- LICENSE
 |-- website-template.md
@@ -81,6 +85,9 @@ that it does not encourage unsupported claims or unnecessary collection of perso
 
 Bug reports and focused pull requests are welcome. Please include a short example of the
 input, expected output, and the environment used to reproduce the issue.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the project scope, development workflow, and
+review checklist.
 
 ## License
 
