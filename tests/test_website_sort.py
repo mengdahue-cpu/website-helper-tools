@@ -30,6 +30,25 @@ class SortMarkdownTests(unittest.TestCase):
 
         self.assertEqual(sort_markdown(source), source)
 
+    def test_ignores_headings_inside_fenced_code_blocks(self) -> None:
+        source = (
+            "# Guide\n\n"
+            "## Contact\nReal contact content.\n\n"
+            "```markdown\n## Services\nExample only.\n```\n\n"
+            "## About\nReal about content.\n"
+        )
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## About"), result.index("## Contact"))
+        self.assertIn("```markdown\n## Services\nExample only.\n```", result)
+        self.assertEqual(result.count("## Services"), 1)
+
+    def test_ignores_headings_inside_tilde_fences(self) -> None:
+        source = "~~~markdown\n## Contact\n~~~\n\n## Services\nWork.\n"
+
+        self.assertEqual(sort_markdown(source), source)
+
 
 if __name__ == "__main__":
     unittest.main()

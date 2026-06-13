@@ -6,6 +6,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
+from typing import Optional
 
 
 SECTION_ORDER = (
@@ -18,7 +19,8 @@ SECTION_ORDER = (
     ("contact", "contact us", "联系", "联系我们"),
 )
 
-HEADING_PATTERN = re.compile(r"^##\s+(.+?)\s*$", re.MULTILINE)
+HEADING_PATTERN = re.compile(r"^##[ \t]+(.+?)[ \t]*(?:\r?\n)?$")
+FENCE_PATTERN = re.compile(r"^[ \t]{0,3}(`{3,}|~{3,})")
 
 
 def section_priority(heading: str) -> int:
@@ -30,19 +32,48 @@ def section_priority(heading: str) -> int:
     return len(SECTION_ORDER)
 
 
+def find_section_headings(content: str) -> list[tuple[int, str]]:
+    """Return level-two headings that are outside fenced code blocks."""
+    headings: list[tuple[int, str]] = []
+    offset = 0
+    fence_character: Optional[str] = None
+    fence_length = 0
+
+    for line in content.splitlines(keepends=True):
+        if fence_character:
+            closing_pattern = rf"^[ \t]{{0,3}}{re.escape(fence_character)}{{{fence_length},}}[ \t]*(?:\r?\n)?$"
+            if re.match(closing_pattern, line):
+                fence_character = None
+                fence_length = 0
+        else:
+            fence_match = FENCE_PATTERN.match(line)
+            if fence_match:
+                fence = fence_match.group(1)
+                fence_character = fence[0]
+                fence_length = len(fence)
+            else:
+                heading_match = HEADING_PATTERN.match(line)
+                if heading_match:
+                    headings.append((offset, heading_match.group(1)))
+
+        offset += len(line)
+
+    return headings
+
+
 def sort_markdown(content: str) -> str:
     """Sort level-two Markdown sections while preserving their contents."""
-    matches = list(HEADING_PATTERN.finditer(content))
-    if not matches:
+    headings = find_section_headings(content)
+    if not headings:
         return content
 
-    prefix = content[: matches[0].start()]
+    prefix = content[: headings[0][0]]
     sections: list[tuple[int, int, str]] = []
 
-    for original_index, match in enumerate(matches):
-        end = matches[original_index + 1].start() if original_index + 1 < len(matches) else len(content)
+    for original_index, (start, heading) in enumerate(headings):
+        end = headings[original_index + 1][0] if original_index + 1 < len(headings) else len(content)
         sections.append(
-            (section_priority(match.group(1)), original_index, content[match.start() : end])
+            (section_priority(heading), original_index, content[start:end])
         )
 
     sections.sort(key=lambda item: (item[0], item[1]))
