@@ -49,6 +49,13 @@ class SortMarkdownTests(unittest.TestCase):
 
         self.assertEqual(sort_markdown(source), source)
 
+    def test_recognizes_headings_with_closing_hashes(self) -> None:
+        source = "## Contact ##\nCall us.\n\n## About ##\nOur story.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## About ##"), result.index("## Contact ##"))
+
 
 if __name__ == "__main__":
     unittest.main()
