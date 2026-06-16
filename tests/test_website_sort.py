@@ -1,4 +1,8 @@
+import sys
 import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from website_sort import sort_markdown
 
@@ -49,6 +53,13 @@ class SortMarkdownTests(unittest.TestCase):
 
         self.assertEqual(sort_markdown(source), source)
 
+    def test_places_faq_before_contact(self) -> None:
+        source = "## Contact\nCall us.\n\n## FAQ\nCommon answers.\n\n## Services\nWork.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## Services"), result.index("## FAQ"))
+        self.assertLess(result.index("## FAQ"), result.index("## Contact"))
 
 if __name__ == "__main__":
     unittest.main()
