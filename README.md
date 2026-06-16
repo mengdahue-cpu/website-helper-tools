@@ -56,11 +56,12 @@ python website_sort.py company-content.md
 ## Sorting Behavior
 
 `website_sort.py` recognizes common English and Chinese level-two headings and orders
-them as home, about, services, solutions, cases, news, and contact. Standard Markdown
-variants such as `## About ##` are recognized as well. The document title and
-introductory text stay at the top. Unrecognized sections are kept in their original
-order after recognized sections, and section contents are not rewritten.
-Headings shown inside backtick or tilde code fences are treated as examples and ignored.
+them as home, about, services, solutions, cases, news, FAQ, and contact. Standard
+Markdown variants such as `## About ##` are recognized as well. The document title
+and introductory text stay at the top. Unrecognized sections are kept in their
+original order after recognized sections, and section contents are not rewritten.
+Headings shown inside backtick or tilde code fences are treated as examples and
+ignored.
 
 Run the test suite from the repository root:
 

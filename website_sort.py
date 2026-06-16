@@ -16,6 +16,7 @@ SECTION_ORDER = (
     ("solutions", "解决方案"),
     ("cases", "case studies", "projects", "案例", "客户案例"),
     ("news", "insights", "新闻", "资讯"),
+    ("faq", "faqs", "frequently asked questions", "常见问题"),
     ("contact", "contact us", "联系", "联系我们"),
 )
 
