@@ -27,6 +27,7 @@ site owners who want a consistent starting point without adopting a large framew
 website-helper-tools/
 |-- .github/workflows/tests.yml
 |-- CONTRIBUTING.md
+|-- examples/sample-company-site.md
 |-- README.md
 |-- LICENSE
 |-- website-template.md
@@ -63,6 +64,12 @@ original order after recognized sections, and section contents are not rewritten
 Headings shown inside backtick or tilde code fences are treated as examples and
 ignored.
 
+You can try the bundled example document:
+
+```bash
+python website_sort.py examples/sample-company-site.md
+```
+
 Run the test suite from the repository root:
 
 ```bash
@@ -85,6 +92,10 @@ document structure is explicitly recognized.
 Before merging a script change, run the unit tests and manually review a document that
 contains both recognized and custom headings. Before merging a template change, verify
 that it does not encourage unsupported claims or unnecessary collection of personal data.
+
+The repository includes a reusable Chinese website template in `website-template.md`
+and a small English example document in `examples/sample-company-site.md` so maintainers
+can review realistic inputs before publishing changes.
 
 Bug reports and focused pull requests are welcome. Please include a short example of the
 input, expected output, and the environment used to reproduce the issue.

@@ -68,6 +68,14 @@ class SortMarkdownTests(unittest.TestCase):
         self.assertLess(result.index("## Services"), result.index("## FAQ"))
         self.assertLess(result.index("## FAQ"), result.index("## Contact"))
 
+    def test_recognizes_chinese_faq_heading(self) -> None:
+        source = "## 联系我们\nCall us.\n\n## 常见问题\nAnswers.\n\n## 服务\nWork.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## 服务"), result.index("## 常见问题"))
+        self.assertLess(result.index("## 常见问题"), result.index("## 联系我们"))
+
 
 if __name__ == "__main__":
     unittest.main()
