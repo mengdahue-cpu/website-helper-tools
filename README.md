@@ -19,6 +19,7 @@ site owners who want a consistent starting point without adopting a large framew
 
 - **Enterprise copy templates:** practical Chinese prompts and placeholders for common pages.
 - **Content organization:** a standard-library Python utility for ordering Markdown sections.
+- **Review checks:** a CLI check mode for validating section order before publishing.
 - **Maintenance guidance:** clear project conventions that are easy to adapt.
 
 ## Project Structure
@@ -53,6 +54,14 @@ Without `--output`, the organized Markdown is printed to standard output:
 ```bash
 python website_sort.py company-content.md
 ```
+
+To check whether a document is already in the preferred order without rewriting it:
+
+```bash
+python website_sort.py --check company-content.md
+```
+
+`--check` exits with status code `1` when recognized sections would be reordered.
 
 ## Sorting Behavior
 

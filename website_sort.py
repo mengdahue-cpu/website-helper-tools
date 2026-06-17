@@ -85,15 +85,33 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Sort common enterprise website sections in a Markdown file."
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Return a non-zero exit code if the file would be reordered",
+    )
     parser.add_argument("input", type=Path, help="UTF-8 Markdown file to organize")
     parser.add_argument("-o", "--output", type=Path, help="Write to this file instead of stdout")
     return parser
 
 
 def main() -> int:
-    args = build_parser().parse_args()
+    parser = build_parser()
+    args = parser.parse_args()
+    if args.check and args.output:
+        parser.error("--check cannot be used with --output")
+
     content = args.input.read_text(encoding="utf-8-sig")
     organized = sort_markdown(content)
+
+    if args.check:
+        if organized == content:
+            return 0
+        print(
+            f"{args.input}: sections are not in the preferred order",
+            file=sys.stderr,
+        )
+        return 1
 
     if args.output:
         args.output.write_text(organized, encoding="utf-8")

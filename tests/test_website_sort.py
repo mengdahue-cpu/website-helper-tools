@@ -1,10 +1,15 @@
+import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from website_sort import sort_markdown
+
+
+SCRIPT_PATH = Path(__file__).resolve().parents[1] / "website_sort.py"
 
 
 class SortMarkdownTests(unittest.TestCase):
@@ -75,6 +80,42 @@ class SortMarkdownTests(unittest.TestCase):
 
         self.assertLess(result.index("## 服务"), result.index("## 常见问题"))
         self.assertLess(result.index("## 常见问题"), result.index("## 联系我们"))
+
+    def test_check_mode_succeeds_for_ordered_document(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = Path(temp_dir) / "ordered.md"
+            source_path.write_text(
+                "## About\nOur story.\n\n## Contact\nCall us.\n",
+                encoding="utf-8",
+            )
+
+            completed = subprocess.run(
+                [sys.executable, str(SCRIPT_PATH), "--check", str(source_path)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertEqual(completed.stdout, "")
+
+    def test_check_mode_fails_for_unordered_document(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = Path(temp_dir) / "unordered.md"
+            source_path.write_text(
+                "## Contact\nCall us.\n\n## About\nOur story.\n",
+                encoding="utf-8",
+            )
+
+            completed = subprocess.run(
+                [sys.executable, str(SCRIPT_PATH), "--check", str(source_path)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("not in the preferred order", completed.stderr)
 
 
 if __name__ == "__main__":
