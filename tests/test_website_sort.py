@@ -65,6 +65,13 @@ class SortMarkdownTests(unittest.TestCase):
 
         self.assertLess(result.index("## About ##"), result.index("## Contact ##"))
 
+    def test_recognizes_headings_with_leading_spaces(self) -> None:
+        source = "   ## Contact\nCall us.\n\n  ## About\nOur story.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("  ## About"), result.index("   ## Contact"))
+
     def test_places_faq_before_contact(self) -> None:
         source = "## Contact\nCall us.\n\n## FAQ\nCommon answers.\n\n## Services\nWork.\n"
 

@@ -67,11 +67,11 @@ python website_sort.py --check company-content.md
 
 `website_sort.py` recognizes common English and Chinese level-two headings and orders
 them as home, about, services, solutions, cases, news, FAQ, and contact. Standard
-Markdown variants such as `## About ##` are recognized as well. The document title
-and introductory text stay at the top. Unrecognized sections are kept in their
-original order after recognized sections, and section contents are not rewritten.
-Headings shown inside backtick or tilde code fences are treated as examples and
-ignored.
+Markdown variants such as `## About ##` and headings indented by up to three spaces
+are recognized as well. The document title and introductory text stay at the top.
+Unrecognized sections are kept in their original order after recognized sections,
+and section contents are not rewritten. Headings shown inside backtick or tilde
+code fences are treated as examples and ignored.
 
 You can try the bundled example document:
 

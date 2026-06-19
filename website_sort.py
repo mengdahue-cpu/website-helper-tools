@@ -20,7 +20,7 @@ SECTION_ORDER = (
     ("contact", "contact us", "联系", "联系我们"),
 )
 
-HEADING_PATTERN = re.compile(r"^##[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*(?:\r?\n)?$")
+HEADING_PATTERN = re.compile(r"^[ \t]{0,3}##[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*(?:\r?\n)?$")
 FENCE_PATTERN = re.compile(r"^[ \t]{0,3}(`{3,}|~{3,})")
 
 
