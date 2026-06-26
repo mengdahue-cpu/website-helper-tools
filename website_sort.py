@@ -27,6 +27,13 @@ FENCE_PATTERN = re.compile(r"^[ \t]{0,3}(`{3,}|~{3,})")
 def section_priority(heading: str) -> int:
     """Return the preferred position for a recognized section heading."""
     normalized = heading.strip().casefold()
+    if normalized in {
+        "products and services",
+        "services and products",
+        "products & services",
+        "services & products",
+    }:
+        normalized = "services"
     for index, aliases in enumerate(SECTION_ORDER):
         if normalized in aliases:
             return index

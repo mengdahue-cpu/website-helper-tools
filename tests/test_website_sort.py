@@ -80,6 +80,22 @@ class SortMarkdownTests(unittest.TestCase):
         self.assertLess(result.index("## Services"), result.index("## FAQ"))
         self.assertLess(result.index("## FAQ"), result.index("## Contact"))
 
+    def test_recognizes_products_and_services_heading(self) -> None:
+        source = "## Contact\nCall us.\n\n## Products and Services\nWork.\n\n## About\nOur story.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## About"), result.index("## Products and Services"))
+        self.assertLess(result.index("## Products and Services"), result.index("## Contact"))
+
+    def test_recognizes_services_ampersand_products_heading(self) -> None:
+        source = "## Contact\nCall us.\n\n## Services & Products\nWork.\n\n## About\nOur story.\n"
+
+        result = sort_markdown(source)
+
+        self.assertLess(result.index("## About"), result.index("## Services & Products"))
+        self.assertLess(result.index("## Services & Products"), result.index("## Contact"))
+
     def test_recognizes_chinese_faq_heading(self) -> None:
         source = "## 联系我们\nCall us.\n\n## 常见问题\nAnswers.\n\n## 服务\nWork.\n"
 
